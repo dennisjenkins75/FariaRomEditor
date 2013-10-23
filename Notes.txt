@@ -1,0 +1,647 @@
+How to double buffer when hanging WM_PAINT:
+http://blogs.msdn.com/oldnewthing/archive/2006/01/03/508694.aspx
+
+
+-----------
+
+Text table: In game open "status" screen.  View the "NES name table".  ASCII chars are mapped as follows:
+0-9: $90 - $99
+a-z: $c3 - $dc
+A-Z: $dd - $f6
+
+"Sayyed" = ef c3 db db c7 c6
+
+Active "player info" struct is at $6900 in NES RAM.
+Save slots #1, 2, 3 are at $6980, $6700, $6780
+
+$6900 Name, 6 bytes.
+
+$6906: Map that you saved in (0-9 = towns).
+	0a = king's castle.
+	0b = shipyard.
+	0c = bad map, but exit near north tower.
+	0d = bad map, exit ???
+
+$6907: X coord of Inn that you stayed in.
+$6908: Y coord of Inn that you stayed in.
+
+
+
+$6914: HP
+$6915: Max HP
+
+strength affected by $690a
+
+# next four appear to be indicies into "player item list".  $fe = no item.
+$690e: current weapon.
+$690f: current bow.
+$6910: current armour.
+$6911: current sheild.
+
+# For XP and Gold, max = 99,999 dec (98, 86, 01 in hex (lsb)).
+$6917,8,9: Gold
+$691a: Current level - 1 ($1d = 30 = max)
+$691b,c,d: XP.
+$691e: amt of batteries loaded.
+$6925: # arrows loaded.
+
+$6927: # Magic Sede
+$6928: # bombs
+$692a: # Magic Saba
+
+
+Item slots: $692f
+	$ff = empty
+	$00 = knife
+	$01 = dirk
+	$02 = iron sword
+	$03 = steel sword
+	$51 = Hyperspeed 1, (52,53 = hyper 2,3)
+... Name table for list is at $17710 in iNES ROM (actually at $17700 in ROM).
+
+
+$6961: Entering first castle changes it from $00 to $04
+
+$695b, mask 0x80: people are poisoned.
+$695b, mask 0x40: have letter from King.
+$695b, mask 0x20: used "THE CRYSTAL" to reveal true phantom tower.
+
+$695b, mask 0x01: Gelve tower down.  imposter princess is following you.
+	0x02: Broww tower down.
+
+
+$695c, mask 0x01: spoke to medicine women in Ehdo about sickness.
+
+
+
+$695d: when entering a town, this loc. is masked with $#bf and saved.
+	ie, bit 0x40 is removed.
+	$0x02 = Have letter from dude in Tegza to use the boat.
+
+
+$6960, $6961: Towns visited (can teleport to w/ wings).
+	$6960: 01 = Ehdo
+	$6960: 02 = Somousa
+	$6960: 04 = Karuza
+	$6960: 08 = Highria
+	$6960: 10 = "RIRIA",
+	$6960: 20 = "TEODOOR",
+	$6960: 40 = "TEGZA",
+	$6960: 80 = "SHILF",
+	$6961: 01 = "ZELLIA",
+	$6961: 02 = "BAIG",
+
+
+#696d: Modified when you get hyperspeed 3.
+
+
+$6975: Pointer to most recent inventory slot used.
+
+$6976: Modified when getting bag of gold near Forest of Confusion.
+	Set break point on $bd83
+
+$6965 and up are bitflags for various treasures taken.
+$6976, bit 0x02 = bag of $$ north of Highria.
+	Data table that translates "bag #" or "item #" into a bit to mask out
+	is at $bda7
+
+
+
+---------------------------------
+When on over world (NES mapped mem loc).
+$95d4: data table, corrupting crashes game.
+$b251: data table.  Corrupting alters tiles displayed in first town.
+	specifically at $b270.  Just alters graphics displayed, not the
+	meaning of the graphics.
+
+ROM: $b63d: (1f) setting to "00" makes town one column wide.
+	=01 makes town 2 columns wide, etc...
+	If you make town skinnier, and walk "south", missing pieces of town appear.
+array from b63d-b649 affects town widths, Ehdo as first byte.
+array from b64a-b655 affects town heights, ehdo as first town affected.
+
+Data tables affecting town tile layout are stored at (ROM) $b657 to $b67b+12.
+Code at $a61a (NES) caches the pointers from this table to Zero-page: $c8,c9,ca,cb.
+$(c8) might point to a table terminated by a $FF.
+$a61a routine is invoked everytime the player moves a square in a town, but not on
+	over world.  If entering a town from the OW, this orutine seems to be invoked in a loop,
+	one call for every column of tiles to draw on the screen.  When invoked, an item 6 or 7 
+	bytes up the stack seems to decrement.  Is also called to scroll the screen while in town.
+	Called twice for each player movement (player is two NAME TABLE glyphs wide, so screen scrolls
+	by two NAME TABLE columns at one time.)  Also called when player moves up or down.
+
+
+
+Routine at (NES) $a6ia seems to map town data:
+	$A61A:A4 86     LDY $86 = #$00
+	$A61C:B9 47 B6  LDA $B647,Y @ $B647 = #$B8
+	$A61F:85 C9     STA $C9 = #$D7
+	$A621:B9 53 B6  LDA $B653,Y @ $B653 = #$60
+	$A624:85 C8     STA $C8 = #$BD
+	$A626:B9 5F B6  LDA $B65F,Y @ $B65F = #$B8
+	$A629:85 CB     STA $CB = #$D7
+	$A62B:B9 6B B6  LDA $B66B,Y @ $B66B = #$67
+	$A62E:85 CA     STA $CA = #$DD
+
+
+-----------------------------
+
+Code used to display names for the items in the save state RAM.
+Table is stored at $692f.  Each item is a 2 byte entry.
+
+$AD56:A9 A4     LDA #$A4
+$AD58:85 14     STA $14 = #$A3
+$AD5A:A9 20     LDA #$20
+$AD5C:85 15     STA $15 = #$20
+$AD5E:A9 19     LDA #$19
+$AD60:85 12     STA $12 = #$19
+$AD62:A9 13     LDA #$13
+$AD64:85 13     STA $13 = #$13
+$AD66:20 58 A1  JSR $A158
+$AD69:A9 C5     LDA #$C5
+$AD6B:85 36     STA $36 = #$05
+$AD6D:A9 20     LDA #$20
+$AD6F:85 3C     STA $3C = #$21
+$AD71:A9 2F     LDA #$2F
+$AD73:85 31     STA $31 = #$2F
+$AD75:A9 69     LDA #$69
+$AD77:85 32     STA $32 = #$69
+$AD79:A0 00     LDY #$00
+$AD7B:A2 00     LDX #$00
+$AD7D:A5 3C     LDA $3C = #$21
+$AD7F:8D 06 20  STA $2006 = #$05
+$AD82:A5 36     LDA $36 = #$05
+$AD84:8D 06 20  STA $2006 = #$05
+$AD87:8A        TXA
+$AD88:48        PHA
+$AD89:98        TYA
+$AD8A:48        PHA
+$AD8B:B1 31     LDA ($31),Y @ $6933 = #$1C
+$AD8D:C9 FF     CMP #$FF
+$AD8F:F0 03     BEQ $AD94
+$AD91:20 85 B2  JSR $B285
+$AD94:68        PLA
+$AD95:A8        TAY
+$AD96:68        PLA
+$AD97:AA        TAX
+$AD98:29 01     AND #$01
+$AD9A:F0 05     BEQ $ADA1
+$AD9C:A9 33     LDA #$33
+$AD9E:4C A3 AD  JMP $ADA3
+$ADA1:A9 0D     LDA #$0D
+$ADA3:18        CLC
+$ADA4:65 36     ADC $36 = #$05
+$ADA6:85 36     STA $36 = #$05
+$ADA8:A5 3C     LDA $3C = #$21
+$ADAA:69 00     ADC #$00
+$ADAC:85 3C     STA $3C = #$21
+$ADAE:E8        INX
+$ADAF:C8        INY
+$ADB0:C8        INY
+$ADB1:C0 2C     CPY #$2C
+$ADB3:D0 C8     BNE $AD7D
+$ADB5:60        RTS
+
+
+------------------------------------------
+How to convert an item ID into a displayable name.
+
+-- Load item index into ACC and JSR $b285
+
+$b285 uses table split between $b61b (lsb) and b67e (msb) to determine
+ptr to string.  Uses ptr to next string to determine length of the first string.
+
+----------------------------------------------
+To wander around the map with no clipping, "freeze" $f4 and $f5.
+----------------------------------------------
+Your current over-world map location is $c1 (x), $c2 (y).
+max = $7f for both coords.
+You can change these to "teleport", but the map won't redraw on screen.
+
+A few locations:
+3d, 3d : final tower
+79, 03 : north west tower
+0a, 0c : Elephant monster grove (near Teodoor).
+12, 1c : upper left ocrner of Teodoor.
+11, 1a : boat dock near Teodoor.
+0c, 11 : boat dock near elephant man grove.
+0f, 3e : upper left corner of Tegza.
+17, 53 : upper left corner of Highria.
+1b, 55 : Gao Gao Gao monster.
+06, 60 : Broww tower.
+03, 70 : upper left corner of ?? (town on cliff)
+
+
+
+----------------------------------------------
+
+
+	CDL log files are just a mask of the PRG-ROM; that is, they are the
+	same size as the PRG-ROM, and each byte represents the corresponding
+	byte of the PRG-ROM.
+	The format of each byte is like so (in binary):
+
+		xPdcAADC
+
+		C  = Whether it was accessed as code.
+		D  = Whether it was accessed as data.
+		AA = Into which ROM bank it was mapped when last accessed:
+			00 = $8000-$9FFF	01 = $A000-$BFFF
+			10 = $C000-$DFFF	11 = $E000-$FFFF
+		c  = Whether indirectly accessed as code.
+			(e.g. as the destination of a JMP ($nnnn) instruction)
+		d  = Whether indirectly accessed as data.
+			(e.g. as the destination of an LDA ($nn),Y instruction)
+		P  = If logged as PCM audio data.
+		x  = unused.
+-----------------------------------------
+The following code seems to be called whenever the player moves.
+It probably stores a list of warp-zone map tiles, like entrences to towns,
+hidden money, etc...  Weird.  Only seems to be called on over-world when player moves "up".
+
+Answer: They are cave entrences.  Caves can only be entered by moving up.  First coord
+"31, 6a" is the cave that you get the "Golden Stone" in.
+
+Table is at $f859 (iNES), $f849 for raw ROM.
+
+
+$B0A8:A0 00     LDY #$00
+$B0AA:A2 50     LDX #$50
+$B0AC:B9 49 B8  LDA $B849,Y @ $B85E = #$5E
+$B0AF:C5 C1     CMP $C1 = #$38
+$B0B1:D0 07     BNE $B0BA
+$B0B3:B9 99 B8  LDA $B899,Y @ $B8AE = #$40
+$B0B6:C5 C2     CMP $C2 = #$7C
+$B0B8:F0 05     BEQ $B0BF
+$B0BA:C8        INY
+$B0BB:CA        DEX
+$B0BC:D0 EE     BNE $B0AC
+$B0BE:60        RTS
+
+
+-- This code determines where in the cave you end up:
+$8E72:A4 E7     LDY $E7 = #$00
+$8E74:B9 02 99  LDA $9902,Y @ $9902 = #$4F
+$8E77:85 C1     STA $C1 = #$31
+$8E79:B9 52 99  LDA $9952,Y @ $9952 = #$4F
+$8E7C:85 C2     STA $C2 = #$6A
+
+$9902 is mapped to $5912 (iNES), $5902 (RAW)
+
+-----------------------------------------------
+
+Code to decompress overworld map seems to be in non-switched ROM at $c126
+
+Overworld map starts at first block of PRG-ROM.
+$00 = water
+$01 = shore line, 25% water in S-W
+$02 = shore line, 25% water in S-E
+$03 = shore line, 25% land in S-E
+$04 = shore line, 25% land in S-W
+$05 = shore line, 25% land in N-E
+$06 = shore line, 25% land in N-W
+$07 = shore line, 50% land in N
+$08 = shore line, 50% land in E
+$09 = shore line, 50% land in W
+$0a = 25% cliff in SE, 75% grass.
+$0b = 25% cliff in SW, 75% grass.
+
+$35-$36 = erect yellow tower (top, bottom)
+$37-$3a = town in grass
+$3b-$3e = King's castle.
+$3f-$40 = erect blue tower (top, bottom)
+$41 = port to NW
+$42 = port to SE
+$43 = E-W bridge
+$44 = N-S bridge
+$45 = 25% sand SW, 75% grass
+$46 = 25% sand SE, 75% grass
+
+$4e = 100$ sand.
+$51 = forest on S, grass on N.
+$52 = 100% forest.
+$59 = forest on N, grass on S.
+$5e = sand on N, grass on S.
+$5f = solid grass.
+
+$65 = grassy cave entrence.
+$6d = icy save entrence.
+
+$67 = solid snow.
+
+$73,74,75,76 = town on cliff top.
+$77 = broken regular tower (yellow on grass).
+$78 = broken final tower (blue on snow).
+
+// Bit usage.  If ($80 <= tile <= $cf): 1ttt tccc
+// If ($d0 <= tile): 1ttt cccc
+// where t = tile, c = count + 2.
+
+// so, $80 = repeat tile "07" 2 times.
+// $81 = repeat tile "07" 3 times.
+// $87 = repeat tile "07" 9 times.
+// $88 = repeat tile "??" 3 times.
+// $df = repeat tile "??" 17 times.
+
+Table of which tiles are repeated for $80-$cf is at $1cbf3 in iNES file.
+entries: 62, 07, 51, 59, 67, 6a, 21, 4e, 5e, 4b
+
+$80 = $62, (water N, grass S)	
+$88 = $07, (water S, grass N)
+$90 = $51, (forest S, grass N)
+$98 = $59, (forest N, grass S)
+$a0 = $67, 100% snow.
+$a8 = $6a, 50% snow on S, water on N.
+$b0 = $21, 50% snow on N, water on S.
+$b8 = $4e, 100% sand.
+$c0 = $5e, 50% sand on N, grass on S.
+$c8 = $4b, 50% sand on S, grass on N.
+
+// These seem to repeat for "x+2" for x=0 to f.
+$d0 = repeat $00, 100% water.
+$e0 = repeat $52, 100% forest.
+$f0 = repeat $5f, 100% grass.
+
+Offsets to map rows:
+Row, offset into iNES, ROM.
+00 = 10 = 00
+01 = 29 = 19
+02 = 52 = 42
+03 = 80 = 70
+
+Table of row offset LSBs begins at $1d71d (iNES) format.
+MSB table at $1d69d (iNES) format.
+
+
+----------------------------------------------------
+Overworld Pallete:
+0F 29 11 21 0F 29 19 37 0F 20 11 21 0F 30 21 10
+00 36 0F 16 00 36 0F 16 00 36 01 30 00 36 0F 13 
+
+
+----------------------------
+Data table at $9fbe has some effect on the decompression of text.
+Set a break point on readds of this address.  Trigger by running into
+a person.  Modify the "Y" register and click "run".  Some text will be different.
+
+-------------------------------
+Town of Karuza tile data starts at $495d (iNES).
+
+Towns have same compression algorithm as overworld.
+ie, $80 - $87 = 2 to 9 repeats of some tile.
+$80 - $87 = light grass.
+$88 - $8f = brick foundations that you can walk on.
+$90 - $97 = dark grass (like Karuza).
+$98 - $9f = blue stuff? passable, so probably not water.
+$a0 - $a7 = blue Spanish roof tiles.
+$a8 - $af = blue bricks, impassible.
+$b0 - $b7 = dark grass on bottom 50%, blackness on top.
+$b8 - $bf = garden veggies.
+$c0 - $c7 = horizontal fence.
+$c8 - $cf = top edge of water?? blue on bottom, black on top.
+$d0 - $d7 = impassible shore line?
+$d8 - $df = impassible brick.
+$e0 - $e7 = red rocks or trees? impassible.
+$e8 - $ef = blue building front, where roof meets front wall.
+$f0 - $f7 = passible blue tiles (front of a building?)
+$f8 - $ff = impassible, unknown.
+
+Non compressed tiles:
+$00 = light grass (see $80).
+$01 = passible brick (building foundations?), see $88
+$02 = dark grass.  See $90
+$03 = dark grass - blackness border tile (passible).
+
+.... $7f = non-compressed tile.
+
+Offsets (iNES, ROM) for first 5 rows of Karuza data:
+$495d  = 4d, 55, 63, 71, 81
+$4965
+$4973
+$4981
+$4991
+
+The ROM offset pattern (LSB) was found at $1d855.
+The MSB pattern begins at $1d83d.
+
+Karuza is $18 x $18 (24x24)?
+
+Zellia offset table is at $1d955 (MSB), $1d965 (lsb).
+Zellia is 16 rows tall by 16 cols deep.
+
+
+
+Town, width x height, iNES for RLE data (RAM), MSB / LSB table offsets
+
+Ehdo, 32x32,	$4761 ($8751), $1d7cd / $1d7ed
+Somusa,	24x24	$48a8 ($8898), $1d80d / $1d824
+Karuza, 24x24	$495d ($894d), $1d83d / $1d855
+Highria, 20x20
+Riria, 20x20
+Teodoor, 20x20
+Tegza, 24x24
+Shilf, 20x32
+Zellia, 16x16
+Baig, 24x24
+King's Castle, 16x24
+
+w: $1f, $17, $17, $13, $13, $13, $17, $13, $0f, $17
+
+w: $20, $18, $18, $14, $14, $14, $18, $14, $10, $18
+h: $20, $18, $18, $14, $14, $14, $18, $20, $10, $18
+
+
+---------------
+When entering a town, code at $a5a6 loads some zero-page pointers based on the
+town # that you are entering.  The town # itself is stored in $86.  Entry point
+seems to be at $a580.
+
+($c8) is loaded from $d799+Y (lsb), $d78d+Y (msb)
+($ca) is loaded from $d7b1+Y (lsb), $d7a5+Y (msb).
+
+$d799: bd fd 2d 5d 85 ad d5 05 45 65 is at $1d7a9 in iNES file.
+
+For Ehdo (town == 0), ($c8) = d7bd, ($ca) = d7dd
+($c8 + XX) is stored at $c7 (LSB)
+($c9 + XX) is stored at $c6 (MSB)
+
+So ($c6) points to $8751, which is the RLE data for Ehdo.
+code then banks switches RLE tiles into address space and
+decompresses them at $c1fe
+
+Table of Widths is at $b63d + town_idx
+Table of Heights is at $b64a + town_idx
+
+---------------------------------------------------------
+Code at $8347 determines if you are entering a town.  Seems to be triggered
+by player walking onto a valid "town" tile.  If there is no town listed in the
+table at the location of the town tiles, the game will lock up.
+
+$8347:B9 9E 98  LDA $989E,Y @ $98A4 = #$0F
+$834A:C5 C1     CMP $C1 = #$62
+$834C:F0 07     BEQ $8355
+$834E:AA        TAX
+$834F:E8        INX
+$8350:8A        TXA
+$8351:C5 C1     CMP $C1 = #$62
+$8353:D0 0E     BNE $8363
+$8355:B9 A8 98  LDA $98A8,Y @ $98AE = #$3E
+$8358:C5 C2     CMP $C2 = #$77
+$835A:F0 0B     BEQ $8367
+$835C:AA        TAX
+$835D:E8        INX
+$835E:8A        TXA
+$835F:C5 C2     CMP $C2 = #$77
+$8361:F0 04     BEQ $8367
+$8363:C8        INY
+$8364:4C 47 83  JMP $8347
+
+$989e is at $98ae iNES, $989e in raw ROM.
+
+
+---------------------------------------------------------
+The buildings in towns are not part of the town RLE data.
+They are stored seperately.
+
+Buildings are 8 tiles wide by 6 tiles tall.
+
+$b804 -> $b827 = A frame house w/ blue roof and wood paneling.
+$b828 -> $b84b = Medicine shop
+$b84c -> $b86e = armor shop.
+
+
+--------------------------------------------------
+Inside Gelve Tower:
+
+Tiles for first room are at iNES $e4da.  Room is 16 wide by 11 tall.
+Room just north of first is at $e662 - $e69d, but is split into pieces.  Some of
+the room is at $e6c1 - $e6e9.
+
+$ed85 controls tile type used on floor 2N into Gelve Tower.
+
+Room is decompressed to $600 in RAM when moving between rooms.
+$ff = black tile.
+$00 = normal walkable tile.
+
+Routine from $be29 to $bee0 converts tiles in $600 from graphics tiles to
+passibility or damage type tiles.  Called after tiles get rendered to the screen.
+
+Value stored at $b3 (bottom 6 bits) affects "modifications" made to the room after it is loaded.
+Code at $9864 handles loading these changes.
+$00 = nothing.
+$01 = 2 columns of saba from top to bottom.
+$02 = random fires on floor.
+$03 = pots that fire boss-enemy projectiles.
+$04 = sand bags in 4 corners.
+$05 = sand bags like "/ \", " - ", "\ /" in center of room.
+$06 = sand bags on floor, 4 columns, slightly curvey.
+$07 = $03 + $04
+$08 = pain tiles (fire?) on 100% of floor that decreases HP when standing on it.
+$09 = $02 (random fires) + some pain tiles.
+$0a = some fire tiles, no random fire.
+$0b = 100% ice floor.
+$0c = Mix of ice and fire tiles on floor (4 2x2 groups of fire tiles, rest ice).
+$0d = Mix of ice and fire tiles on floor (5 groups of fire tiles).
+$0e = Gravity tiles that pull player to column in center of room.
+$0f = Two columns of sandbags that keep player confied to center of room.
+$10 = Diagonal sandbags that seperate NW from SE sides of room.
+$11 = Pits to fall through, like in Broww Tower.
+$12 = Pits and ice tiles.
+$13 = Pits, like on final map with dragon.
+$14 = Pits on left and right, but clear path to go up.
+$15 = Seems invalid.  Never seen before.  Has lots of weird tiles.
+$16 = Seems invalid.  Never seen before.  Has lots of weird tiles.
+$17 = Seems invalid.  Never seen before.  Has lots of weird tiles.
+$18 = Seems invalid.  Never seen before.  Has lots of weird tiles.
+$19 = Possibly valid?  Sand bags seperate N from S.  Block W and E too.
+$1a = Seems invalid.
+$1b = Seems invalid.
+$1c = Seems invalid.
+$1d = Seems invalid.
+$1e = Seems invalid.
+$1f = Seems invalid, but possibly useful.  Has lots of idle pots.  N/S travel possible.
+
+$20 = causes "dent" in lower right corner.
+$40 = causes "dent" in lower left corner.
+$80 = causes "dent" in upper right corner.
+$e0 = "dents" in all three corners.
+
+Setting bit $40 of $df will cause upper left corner to dent.
+Code to handle dents:
+$9356:A9 40     LDA #$40
+$9358:24 DF     BIT $DF = #$30
+$935A:F0 03     BEQ $935F
+$935C:20 CE 98  JSR $98CE
+$935F:A9 80     LDA #$80
+$9361:24 B3     BIT $B3 = #$00
+$9363:F0 03     BEQ $9368
+$9365:20 F6 98  JSR $98F6
+$9368:A9 40     LDA #$40
+$936A:24 B3     BIT $B3 = #$00
+$936C:F0 03     BEQ $9371
+$936E:20 20 99  JSR $9920
+$9371:A9 20     LDA #$20
+$9373:24 B3     BIT $B3 = #$00
+$9375:F0 03     BEQ $937A
+$9377:20 4A 99  JSR $994A
+
+Translation table from map tiles to PPU tiles for towers is
+between iNES $d1bc and $d2bb.
+Palette between $d2bc and $d305.
+
+
+$10e16 -> 6 bytes tiles for the stone statues: B8 B9 BA BB BC BD
+
+$1b318 seems to control all of the doors between rooms of the tower.
+
+----  Room mapping.
+Broww Tower, first floor, floor map @ $1b51a (raw ROM).
+Each "room" is 2 consecutive bytes.  Floors are 8x8 grid of rooms.
+
+Floor #0 = $1b51a
+Floor #1 = $1b5da
+Floor #2 = $1b65a
+
+Each room is 2 bytes, 16 bits.  First room in Broww is "09,20"
+= 0000 1001 0010 0000
+               x xxxx	Tile flags (ice, fire, gravity).
+   x        xxx         Dents in the 4 corners.
+  x                     Ignored?
+
+       10               Has door to north
+         00             No door to west.
+         01             Has open door to west
+         10             Has closed door to west
+         11             Has open door that closes behind you to west?
+
+  0001 1111             Doors on W,S,N.  N door closes after you pass
+			Go west, then back E and get bad room.
+
+  0000 1100             Doors on W,S,N.  W door cycles.
+
+
+
+First byte is copied to $d7, second byte to $b3.
+Second byte controls room flags, like dents, fires, ice tiles, sand bags.
+lower bits from first byte are other dent pieces.
+
+00,20 = S door, dent in LR.
+01,20 = SW door, dent in LR.
+xx,00 = no dent.
+
+49,e0 = default room, but with dents in all 4 corners.
+
+$1b5e0, affects enemies in the first room in Broww.  $fe = none.
+$00 = 1 deseart like thing.
+
+$1b5aa = beginning of enemy array for 1st floor, broww tower.
+
+$1b774 through $1b81a = stuff like stairs.
+
+$1b744 = $14.  Set to $00 to make stairs go away.  $04 and $10 both leave stairs.
+
+--------  Phantom tower.
+First room enemy control @ $1bbad (iNES)
+First room layout @$1bb67,68 (iNES)
+
+Room with Hyperspeed 3 = $1bb59

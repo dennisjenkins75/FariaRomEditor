@@ -1,0 +1,465 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+DIALOG_SAVE_GAME DIALOG DISCARDABLE  0, 0, 528, 309
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | DS_CENTER | 
+    WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Player Name:",IDC_STATIC,7,7,43,8
+    EDITTEXT        IDC_NAME,69,8,40,14,ES_AUTOHSCROLL
+    LTEXT           "HP (0-255)",IDC_STATIC,7,23,35,8
+    EDITTEXT        IDC_HP,69,23,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Max HP (0-255)",IDC_STATIC,7,38,50,8
+    EDITTEXT        IDC_MAX_HP,69,38,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "XP (0-99,999)",IDC_STATIC,7,53,44,8
+    EDITTEXT        IDC_XP,69,53,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "XP for next level",IDC_STATIC,7,68,52,8
+    EDITTEXT        IDC_XP_NEXT,69,68,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Gold (0-99,999)",IDC_STATIC,7,83,50,8
+    EDITTEXT        IDC_GOLD,69,83,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Level (1-30)",IDC_STATIC,7,98,38,8
+    EDITTEXT        IDC_LEVEL,69,98,40,14,ES_AUTOHSCROLL
+    LTEXT           "Batteries",IDC_STATIC,7,113,28,8
+    EDITTEXT        IDC_BATTERIES,69,113,40,14,ES_AUTOHSCROLL
+    LTEXT           "Arrows",IDC_STATIC,7,128,22,8
+    EDITTEXT        IDC_ARROWS,69,128,40,14,ES_AUTOHSCROLL
+    LTEXT           "Magic Sede",IDC_STATIC,7,143,39,8
+    EDITTEXT        IDC_MAGIC_SEDE,69,143,40,14,ES_AUTOHSCROLL
+    LTEXT           "Magic Saba",IDC_STATIC,7,158,39,8
+    EDITTEXT        IDC_MAGIC_SABA,69,158,40,14,ES_AUTOHSCROLL
+    LTEXT           "Bombs",IDC_STATIC,7,173,22,8
+    EDITTEXT        IDC_BOMBS,69,173,40,14,ES_AUTOHSCROLL
+    LTEXT           "Inventory Items:",IDC_STATIC,117,7,164,8
+    COMBOBOX        IDC_ITEM_SLOT_0,117,21,80,30,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_1,201,21,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_2,117,34,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_3,201,34,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_4,117,47,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_5,201,47,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_6,117,60,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_7,201,60,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_8,117,73,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_9,201,73,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_10,117,86,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_11,201,86,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_12,117,99,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_13,201,99,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_14,117,112,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_15,201,112,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_16,117,125,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_17,201,125,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_18,117,138,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ITEM_SLOT_19,201,138,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Sword",IDC_STATIC,117,156,21,8
+    COMBOBOX        IDC_SWORD,152,156,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Bow",IDC_STATIC,117,169,15,8
+    COMBOBOX        IDC_BOW,152,169,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Armour",IDC_STATIC,117,182,23,8
+    COMBOBOX        IDC_ARMOUR,152,182,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Sheild",IDC_STATIC,117,195,20,8
+    COMBOBOX        IDC_SHEILD,152,195,80,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Game event bit flags.",IDC_STATIC,289,7,191,8
+    CONTROL         "List1",IDC_BIT_FLAG_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,289,21,232,199
+    LTEXT           "Ram Contents (0x0900 + 0x80 * slot)",IDC_STATIC,7,219,
+                    116,8
+    EDITTEXT        IDC_RAW_RAM,7,232,274,70,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_NOHIDESEL | ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "Select a soldier slot to view/edit.",IDC_STATIC,416,223,
+                    45,25
+    CONTROL         "Temp Ram",IDC_RADIO_SLOT_0,"Button",BS_AUTORADIOBUTTON | 
+                    BS_NOTIFY,416,252,48,10
+    CONTROL         "Soldier #1",IDC_RADIO_SLOT_1,"Button",
+                    BS_AUTORADIOBUTTON | BS_NOTIFY,416,266,48,10
+    CONTROL         "Soldier #2",IDC_RADIO_SLOT_2,"Button",
+                    BS_AUTORADIOBUTTON | BS_NOTIFY,416,280,48,10
+    CONTROL         "Soldier #3",IDC_RADIO_SLOT_3,"Button",
+                    BS_AUTORADIOBUTTON | BS_NOTIFY,416,292,48,10
+    PUSHBUTTON      "Open File",IDC_OPEN_FILE,471,246,50,14
+    PUSHBUTTON      "Save File",IDC_SAVE_FILE,471,268,50,14
+    PUSHBUTTON      "Close",IDCANCEL,471,288,50,14
+    COMBOBOX        IDC_STARTING_TOWN,61,188,48,30,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Starting Town",IDC_STATIC,7,191,47,8
+END
+
+DIALOG_ABOUT_BOX DIALOG DISCARDABLE  0, 0, 192, 113
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,71,92,50,14
+    CTEXT           "Faria ROM editor, by eColi Games.",IDC_STATIC,73,20,112,
+                    8
+    CTEXT           "Faria is Copyright 1990, Nexoft.",IDC_STATIC,73,63,112,
+                    8
+    CTEXT           "Version: x.x.x.x",IDC_VERSION,73,42,112,8
+    CONTROL         115,IDC_STATIC,"Static",SS_BITMAP,7,34,43,44
+END
+
+DIALOG_CHOOSE_MAP DIALOG DISCARDABLE  0, 0, 305, 196
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Choose Map"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_MAP_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,7,291,160
+    PUSHBUTTON      "Select All",CM_SELECT_ALL,28,175,50,14
+    PUSHBUTTON      "Clear All",CM_CLEAR_ALL,93,175,50,14
+    DEFPUSHBUTTON   "OK",IDOK,158,175,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,223,175,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    DIALOG_SAVE_GAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 521
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 302
+    END
+
+    DIALOG_ABOUT_BOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 185
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 106
+    END
+
+    DIALOG_CHOOSE_MAP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 298
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 189
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+ICON_GAOGAO             ICON    DISCARDABLE     "bin/gaogao.ico"
+ICON_PLAYER             ICON    DISCARDABLE     "bin/player.ico"
+ICON_TOWER              ICON    DISCARDABLE     "bin/tower.ico"
+ICON_LAND               ICON    DISCARDABLE     "bin/land.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+MENU_MAIN MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open",                       CM_FILE_OPEN
+        MENUITEM "&Save",                       CM_FILE_SAVE
+        MENUITEM "E&xit",                       CM_FILE_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Edit &Map",                   CM_EDIT_MAP
+        MENUITEM "Edit &Overworld",             CM_EDIT_OVERWORLD
+        MENUITEM "Edit &Skyworld",              CM_EDIT_SKYWORLD
+        MENUITEM "Edit &Caveworld",             CM_EDIT_CAVEWORLD
+        MENUITEM "Open &Stub",                  CM_MDI_STUB
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&Cascade\tShift+F5",          IDM_WINDOW_CASCADE
+        MENUITEM "&Tile\tShift+F4",             IDM_WINDOW_TILE
+        MENUITEM "Arrange &Icons",              IDM_WINDOW_ARRANGE
+        MENUITEM "Close &All",                  IDM_WINDOW_CLOSEALL
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About",                      CM_HELP_ABOUT
+    END
+END
+
+MENU_MAP_EDITOR MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open",                       CM_FILE_OPEN
+        MENUITEM "&Save",                       CM_FILE_SAVE
+        MENUITEM "E&xit",                       CM_FILE_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Edit &Map",                   CM_EDIT_MAP
+        MENUITEM "Edit &Overworld",             CM_EDIT_OVERWORLD
+        MENUITEM "Edit &Skyworld",              CM_EDIT_SKYWORLD
+        MENUITEM "Edit &Caveworld",             CM_EDIT_CAVEWORLD
+        MENUITEM "Open &Stub",                  CM_MDI_STUB
+    END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM "&Hand Tool",                  CM_TOOL_HAND_TOOL
+        MENUITEM "&Select Tool",                CM_TOOL_SELECT_TOOL
+        MENUITEM "&Pen Tool",                   CM_TOOL_PEN_TOOL
+        MENUITEM SEPARATOR
+        MENUITEM "Label Locations",             CM_TOOL_LABELS
+    END
+    POPUP "&Zoom"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&Cascade\tShift+F5",          IDM_WINDOW_CASCADE
+        MENUITEM "&Tile\tShift+F4",             IDM_WINDOW_TILE
+        MENUITEM "Arrange &Icons",              IDM_WINDOW_ARRANGE
+        MENUITEM "Close &All",                  IDM_WINDOW_CLOSEALL
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About",                      CM_HELP_ABOUT
+    END
+END
+
+MENU_STUB MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open",                       CM_FILE_OPEN
+        MENUITEM "&Save",                       CM_FILE_SAVE
+        MENUITEM "E&xit",                       CM_FILE_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Edit &Map",                   CM_EDIT_MAP
+        MENUITEM "Edit &Overworld",             CM_EDIT_OVERWORLD
+        MENUITEM "Edit &Skyworld",              CM_EDIT_SKYWORLD
+        MENUITEM "Edit &Caveworld",             CM_EDIT_CAVEWORLD
+        MENUITEM "Open &Stub",                  CM_MDI_STUB
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&Cascade\tShift+F5",          IDM_WINDOW_CASCADE
+        MENUITEM "&Tile\tShift+F4",             IDM_WINDOW_TILE
+        MENUITEM "Arrange &Icons",              IDM_WINDOW_ARRANGE
+        MENUITEM "Close &All",                  IDM_WINDOW_CLOSEALL
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About",                      CM_HELP_ABOUT
+    END
+END
+
+MENU_CANVAS_POPUP_1 MENU DISCARDABLE 
+BEGIN
+    POPUP "Hidden"
+    BEGIN
+        MENUITEM "&Copy",                       CM_COPY
+        MENUITEM "&Paste",                      CM_PASTE
+        MENUITEM "Paste Pattern",               CM_PASTE_PATTERN
+        MENUITEM "&Fill",                       CM_FILL
+        MENUITEM SEPARATOR
+        MENUITEM "Hand Tool",                   CM_TOOL_HAND_TOOL
+        MENUITEM "Selection Tool",              CM_TOOL_SELECT_TOOL
+        MENUITEM "Pen Tool",                    CM_TOOL_PEN_TOOL
+    END
+END
+
+MENU_CANVAS_POPUP_2 MENU DISCARDABLE 
+BEGIN
+    POPUP "Hidden"
+    BEGIN
+        MENUITEM "Hand Tool",                   CM_TOOL_HAND_TOOL
+        MENUITEM "Selection Tool",              CM_TOOL_SELECT_TOOL
+        MENUITEM "Pen Tool",                    CM_TOOL_PEN_TOOL
+    END
+END
+
+MENU_CANVAS_POPUP_3 MENU DISCARDABLE 
+BEGIN
+    POPUP "Hidden"
+    BEGIN
+        MENUITEM "&Sample Tile",                CM_SAMPLE_TILE
+        MENUITEM SEPARATOR
+        MENUITEM "Hand Tool",                   CM_TOOL_HAND_TOOL
+        MENUITEM "Selection Tool",              CM_TOOL_SELECT_TOOL
+        MENUITEM "Pen Tool",                    CM_TOOL_PEN_TOOL
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+BITMAP_OW_TILES         BITMAP  DISCARDABLE     "bin/OverworldTiles.bmp"
+BITMAP_SKY_TILES        BITMAP  DISCARDABLE     "bin/SkyworldTiles.bmp"
+BITMAP_CAVE_TILES       BITMAP  DISCARDABLE     "bin/CaveTiles.bmp"
+BITMAP_TOWN_TILES       BITMAP  DISCARDABLE     "bin/TownTiles.bmp"
+BITMAP_GAOGAO           BITMAP  DISCARDABLE     "bin/GaoGaoMonster.bmp"
+BITMAP_CASTLE_TILES     BITMAP  DISCARDABLE     "bin/CastleTiles.bmp"
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,1,0,0
+ PRODUCTVERSION 0,1,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "eColi Games\0"
+            VALUE "FileDescription", "FariaEditor\0"
+            VALUE "FileVersion", "0, 1, 0, 0\0"
+            VALUE "InternalName", "FariaEditor\0"
+            VALUE "LegalCopyright", "Copyright © eColiGames, 2005-2013\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "FariaRomEditor.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "FariaRomEditor\0"
+            VALUE "ProductVersion", "0, 1, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+CURSOR_HAND_CLOSED      CURSOR  DISCARDABLE     "bin\\ClosedHand.cur"
+CURSOR_HAND_OPEN        CURSOR  DISCARDABLE     "bin\\OpenHand.cur"
+CURSOR_HAND_POINTING    CURSOR  DISCARDABLE     "bin\\PointingHand.cur"
+CURSOR_PEN              CURSOR  DISCARDABLE     "bin\\Pen.cur"
+CURSOR_SELECT           CURSOR  DISCARDABLE     "bin\\Select.cur"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
