@@ -1,13 +1,25 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+# MSDEV98 output directories
+FariaLib/Debug/
+FariaLib/DebugUnicode/
+FariaLib/ProfileUnicode/
+FariaLib/Release/
+FariaLib/ReleaseUnicode/
+FariaRomEditor/Debug/
+FariaRomEditor/DebugUnicode/
+FariaRomEditor/ProfileUnicode/
+FariaRomEditor/Release/
+FariaRomEditor/ReleaseUnicode/
+Hacks/Debug/
+Hacks/Release/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+# Deliverables
+*.exe
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+# MSDEV98 compiler artefacts
+*.obj
+*.plg
+*.lib
+*.ilk
+*.pch
+*.idb
+*.pdb
